@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Classwork.Chapter5
+﻿namespace Classwork.Chapter5
 {
     public static class Q5_18
     {
