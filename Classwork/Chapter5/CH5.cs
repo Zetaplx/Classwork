@@ -14,24 +14,107 @@
             }
             #endregion
 
-            Dictionary<int, CreditLimitCalculator.Account> accounts = new Dictionary<int, CreditLimitCalculator.Account>();
+            // Stores all customer accounts for the final display.
+            List<Customer> customers = new List<Customer>();
+
+            #region Account ID Input
+            Console.Write("Enter an account number to add an account. Enter \"e\" to exit: ");
+            string line = Console.ReadLine() ?? "";
+            int accountID = 0;
+            while(line.ToLower() != "e" && (!int.TryParse(line, out accountID) || accountID < 0))
+            {
+                Console.Write("Please enter a valid account number: ");
+                line = Console.ReadLine() ?? "";
+            }
+            #endregion
+
+            while (line.ToLower() != "e")
+            {
+                // Okay. Utils.SafeReadInt is a method I wrote to make my life a bit easier when it comes to reading ints based off of some condition
+                // If you'd like me to full justify/explain this code I can, just let me know. The code for it all can be found in the Utils folder.
+                // I do believe I have shown that I know how to perform the sort of condition checking asked in the assignment with the initial line above.
+                // Additionally, that initial input is not something my methods are designed to handle since it works with both the integer and the string versions of the input.
+
+                #region Create account
+                Console.Write("Enter the initial balance: ");
+                int init = Utils.SafeReadInt((n) => n >= 0, "Please enter a valid balance");
+
+                Console.Write("Enter the total account charges for the month: ");
+                int charges = Utils.SafeReadInt((n) => n >= 0, "Please enter a valid amount");
+
+                Console.Write("Enter the total account credits for the month: ");
+                int credits = Utils.SafeReadInt((n) => n >= 0, "Please enter a valid amount");
+
+                Console.Write("Enter the credit limit: ");
+                int creditLimit = Utils.SafeReadInt((n) => n >= 0, "Please enter a valid credit limit");
+
+                Customer customer = new Customer(accountID, init, charges, credits, creditLimit);
+                Console.WriteLine(customer);
+
+                customers.Add(customer);
+                #endregion
+
+                #region Account ID Input
+                Console.Write("\n\nEnter an account number to add an account. Enter \"e\" to exit: ");
+                line = Console.ReadLine() ?? "";
+                while (line.ToLower() != "e" && (!int.TryParse(line, out accountID) || accountID < 0))
+                {
+                    Console.Write("Please enter a valid account number or \"e\" to exit: ");
+                    line = Console.ReadLine() ?? "";
+                }
+                #endregion
+            }
+
+            int exceeded = 0;
+            Console.WriteLine("\n\nAll created accounts: ");
+            foreach (var acc in customers)
+            {
+                Console.WriteLine(acc);
+                if (acc.ExceedsCreditLimit(out var amt)) exceeded++;
+            }
+
+            Console.WriteLine($"{exceeded} accounts exceeded their credit limit. {customers.Count - exceeded} did not.");
+
+            Console.Write("\nEnter anything to exit: ");
+            Console.ReadLine();
+        }
+
+        // Not the real version
+        public static void RunIncorrect(bool intro = true)
+        {
+            Console.Clear();
+            #region Intro Text
+            if (intro)
+            {
+                Console.WriteLine("Welcome to the Credit Limit Calculator. Press enter to begin.");
+                Console.ReadLine();
+                Console.Clear();
+            }
+            #endregion
+
+            
+            Dictionary<int, CreditLimitCalculator.Account> accounts = new Dictionary<int, CreditLimitCalculator.Account>(); // Stores all accounts
             string line;
+
             do
             {
+                #region Account Input
                 Console.Clear();
                 Console.WriteLine("Enter an account number. New numbers will create a new account. " +
                     "Existing numbers will allow you to update the account's balance. \nEnter e to exit the application.");
                 Console.Write("Account Number: ");
                 int accountNumber;
                 line = Console.ReadLine() ?? "";
+                while (!int.TryParse(line, out accountNumber) && line.ToLower() != "e")
+                {
+                    Console.Write("Please enter a valid number: ");
+                    line = Console.ReadLine() ?? "";
+                }
+                #endregion
+
                 if (line.ToLower() != "e")
                 {
-                    while (!int.TryParse(line, out accountNumber))
-                    {
-                        Console.Write("Please enter a valid number: ");
-                        line = Console.ReadLine() ?? "";
-                    }
-
+                    // Check if account already exists
                     if (accounts.TryGetValue(accountNumber, out var account))
                     {
                         CreditLimitCalculator.ModifyAccount(account);
@@ -49,7 +132,7 @@
                         while (!(y || n))
                         {
                             Console.Write("Please enter y or n: ");
-                            newLine = Console.ReadLine();
+                            newLine = Console.ReadLine() ?? "";
                             y = newLine.ToLower() == "y";
                             n = newLine.ToLower() == "n";
                         }
@@ -60,7 +143,7 @@
         }
     }
 
-
+    #region Not the real version
     public class CreditLimitCalculator
     {
         /// <summary>
@@ -132,6 +215,8 @@
             int totalCredit;
             int creditLimit;
 
+            
+
             public int CurrentBalance => initialBalance + totalCharges - totalCredit;
 
             public Account(int accountNumber, int balance, int creditLimit, int initialCharges = 0, int initialCredit = 0)
@@ -154,6 +239,45 @@
                 totalCredit = updatedCredit;
                 return true;
             }
+        }
+    }
+    #endregion
+
+    public class Customer
+    {
+        public int AccountID { get; private set; }
+        public int InitalBalance { get; private set; }
+        public int TotalCharges { get; private set; }
+        public int TotalCredits { get; private set; }
+        public int CreditLimit { get; private set; }
+
+        public int CalculateBalance() => InitalBalance + TotalCharges - TotalCredits;
+        public bool ExceedsCreditLimit(out int amt)
+        {
+            var balance = CalculateBalance();
+
+            if(balance < -CreditLimit)
+            {
+                amt = -balance - CreditLimit;
+                return true;
+            }
+            amt = 0;
+            return false;
+        }
+
+        public Customer(int id, int balance, int charges, int credits, int limit)
+        {
+            AccountID = id;
+            InitalBalance = balance;
+            TotalCharges = charges;
+            TotalCredits = credits;
+            CreditLimit = limit;
+        }
+
+
+        public override string ToString()
+        {
+            return $"{AccountID}: ${CalculateBalance()} (IB + Charges - Credits => {InitalBalance} + {TotalCharges} + {TotalCredits}) {(ExceedsCreditLimit(out var amt) ? "Exceeded credit limit by $" + amt : "" )}";
         }
     }
 }
