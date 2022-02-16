@@ -38,6 +38,7 @@ namespace Classwork
             var number = SafeReadLine((s) => int.TryParse(s, out var num) && condition(num), errMessage);
             return int.Parse(number);
         }
+
         /// <summary>
         /// Reads line from user as an integer. Will repeat promt until the input is a valid integer.
         /// </summary>

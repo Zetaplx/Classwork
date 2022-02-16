@@ -42,7 +42,7 @@
         /// <param name="totalWidth">Overall width of diamond</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private static bool GetInDiamond(int i, int layerWidth, int totalWidth)
+        private static bool IsInDiamond(int i, int layerWidth, int totalWidth)
         {
             if (!(layerWidth % 2 == totalWidth % 2)) throw new Exception("Layer width parity must match Total Width parity");
 
@@ -65,7 +65,7 @@
 
             for(int i = 0; i < totalWidth; i++)
             {
-                Console.Write(GetInDiamond(i, layerWidth, totalWidth) ? "*" : " ");
+                Console.Write(IsInDiamond(i, layerWidth, totalWidth) ? "*" : " ");
             }
             Console.WriteLine();
         }

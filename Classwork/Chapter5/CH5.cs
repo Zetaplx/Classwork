@@ -105,6 +105,8 @@
                 Console.Write("Account Number: ");
                 int accountNumber;
                 line = Console.ReadLine() ?? "";
+
+
                 while (!int.TryParse(line, out accountNumber) && line.ToLower() != "e")
                 {
                     Console.Write("Please enter a valid number: ");
