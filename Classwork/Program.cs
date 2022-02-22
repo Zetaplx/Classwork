@@ -1,10 +1,10 @@
-﻿using Classwork.Chapter6.Classtime;
+﻿using Classwork.Chapter6;
 using Classwork;
 
 public static class Program
 {
     public static void Main(string[] args)
     {
-        Triangle.D(19);
+        Q6_24.Run();
     }
 }
