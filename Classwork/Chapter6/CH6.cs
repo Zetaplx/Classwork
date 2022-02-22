@@ -17,7 +17,7 @@
             // This looks crazy, I know. But I got tired of writing my input statements with validation loops so I wrote a Utils class to handle all that nonsense for me.
             // If you want me to justify and explain it I definitely can, just let me know.
             // But its basically just getting an int bigger than 2 and storing it in the variable size.
-            Utils.CompactReadLine("Insert the size for your diamond", out int size, () => Utils.SafeReadInt((n) => n > 2, "Please input a valid size"));
+            Utils.CompactReadLine("Insert the size for your diamond", out int size, () => Utils.SafeReadInt((n) => n > 2 && n <= 19, "Please input a valid size between 2 and 19"));
             Console.Clear();
 
             // I know the assignment said to make sure the input is odd. I challenged myself to make it work with even inputs. Hopefully it's clear that I know how to
@@ -71,6 +71,20 @@
         }
 
         /// <summary>
+        /// Prints a single layer of the diamond. Based on what we did in class last week. 
+        /// Muuuch simpler and doesn't rely on that weird "high center" I use above.
+        /// </summary>
+        /// <param name="layerWidth"></param>
+        /// <param name="totalWidth"></param>
+        private static void PrintLayerSimple(int layerWidth, int totalWidth)
+        {
+            if ((totalWidth - layerWidth) % 2!= 0) throw new Exception("Layer width parity must match Total Width parity");
+            int whiteSpace = (totalWidth - layerWidth) / 2;
+
+            Console.WriteLine("".PadLeft(layerWidth, '*').PadLeft(layerWidth + whiteSpace).PadRight(totalWidth));
+        }
+
+        /// <summary>
         /// Prints a diamond. Loops up, then down in size printing layer by layer
         /// </summary>
         /// <param name="width">Overall width of diamond</param>
@@ -79,12 +93,12 @@
             int startSize = width % 2 == 0 ? 2 : 1;
             for(int i = startSize; i <= width; i += 2)
             {
-                PrintLayer(i, width);
+                PrintLayerSimple(i, width);
             }
 
             for (int i = width - 2; i >= startSize; i -= 2)
             {
-                PrintLayer(i, width);
+                PrintLayerSimple(i, width);
             }
         }
     }
