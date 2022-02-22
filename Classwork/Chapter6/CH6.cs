@@ -15,7 +15,6 @@
             #endregion
 
             // This looks crazy, I know. But I got tired of writing my input statements with validation loops so I wrote a Utils class to handle all that nonsense for me.
-            // If you want me to justify and explain it I definitely can, just let me know.
             // But its basically just getting an int bigger than 2 and storing it in the variable size.
             Utils.CompactReadLine("Insert the size for your diamond", out int size, () => Utils.SafeReadInt((n) => n > 2 && n <= 19, "Please input a valid size between 2 and 19"));
             Console.Clear();
