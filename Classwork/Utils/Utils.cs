@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace Classwork
 {
@@ -177,6 +173,17 @@ namespace Classwork
 
             choices[index].response();
         }
+        public static void Menu(string headline, params (int key, string message, Action response)[] choices)
+        {
+            Console.WriteLine(headline + ": ");
+            for (int i = 0; i < choices.Length; i++)
+            {
+                Console.WriteLine($"{choices[i].key}: {choices[i].message}");
+            }
+            var keys = (from c in choices select c.key).ToList();
+            CompactReadLine("Enter", out int output, () => SafeReadInt((n) => keys.Contains(n), "Invalid Choice. Try again"));
+            choices[keys.IndexOf(output)].response();
+        }
 
         public static int MenuSimple(string headline, bool simpleAbort = true, params string[] messages)
         {
@@ -200,6 +207,25 @@ namespace Classwork
                 list.Add(convert(v));
             }
             return list;
+        }
+
+        public static void PrintTable<T>(IEnumerable<T> arr, params (string title, int width, Func<T, string> val)[] columns)
+        {
+            foreach(var col in columns)
+            {
+                Console.Write(col.title.PadRight(col.width));
+            }
+
+            Console.WriteLine();
+
+            foreach(var row in arr)
+            {
+                foreach(var col in columns)
+                {
+                    Console.Write(col.val(row).PadRight(col.width));
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

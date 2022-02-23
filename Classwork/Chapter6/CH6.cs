@@ -80,7 +80,7 @@
             if ((totalWidth - layerWidth) % 2!= 0) throw new Exception("Layer width parity must match Total Width parity");
             int whiteSpace = (totalWidth - layerWidth) / 2;
 
-            Console.WriteLine("".PadLeft(layerWidth, '*').PadLeft(layerWidth + whiteSpace).PadRight(totalWidth));
+            Console.WriteLine("".PadLeft(layerWidth, '*').PadLeft(layerWidth + whiteSpace).PadRight(totalWidth).PadLeft(totalWidth + 1, '|').PadRight(totalWidth + 2, '|'));
         }
 
         /// <summary>
@@ -89,8 +89,12 @@
         /// <param name="width">Overall width of diamond</param>
         public static void PrintDiamond(int width)
         {
+
             int startSize = width % 2 == 0 ? 2 : 1;
-            for(int i = startSize; i <= width; i += 2)
+
+            Console.WriteLine("".PadRight(width + 2, '-'));
+
+            for (int i = startSize; i <= width; i += 2)
             {
                 PrintLayerSimple(i, width);
             }
@@ -99,6 +103,8 @@
             {
                 PrintLayerSimple(i, width);
             }
+
+            Console.WriteLine("".PadRight(width + 2, '-'));
         }
     }
 }
