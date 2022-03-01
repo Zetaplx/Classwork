@@ -42,13 +42,17 @@ namespace Classwork.Chapter9
                     (5, "Query E: Descriptions and Values between $200 and $500 sorted by Value", () => QueryE(invoices)),
                     (6, "Query F: Part Numbers with Prices greater than $50 sorted by Price", () => QueryF(invoices)),
                     (7, "Query G: Description of part with maximum price\n", () => QueryG(invoices)),
-                    (8, "Print default parts table", () =>
-                        Utils.PrintTable(invoices,
-                            ("Part Number", 20, (invoice) => "" + invoice.PartNumber),
-                            ("Description", 25, (invoice) => invoice.PartDescription),
-                            ("Quantity", 20, (invoice) => "" + invoice.Quantity),
-                            ("Price", 10, (invoice) => $"{invoice.Price:c}")
-                        )
+                    (8, "Print default parts table", () => {
+                            Console.Clear();
+                            Console.WriteLine("Catalogue");
+                            Utils.PrintTable(invoices,
+                                ("Part Number", 20, (invoice) => "" + invoice.PartNumber),
+                                ("Description", 25, (invoice) => invoice.PartDescription),
+                                ("Quantity", 20, (invoice) => "" + invoice.Quantity),
+                                ("Price", 10, (invoice) => $"{invoice.Price:c}")
+                            );
+                            Console.Write("Enter to return to menu: "); Console.ReadLine();
+                        }
                     ),
                     (9, "Perform all querys in sequence", () => { QueryA(invoices); QueryB(invoices); QueryC(invoices); QueryD(invoices); QueryE(invoices); QueryF(invoices); QueryG(invoices); }),
                     (-1, "Exit Application", () => running = false)
@@ -62,7 +66,7 @@ namespace Classwork.Chapter9
             Console.WriteLine("Query A\n");
             var sortedByDescription = from i in invoices orderby i.PartDescription select i;
 
-            Utils.PrintTable(sortedByDescription,
+            Utils.PrintTable(sortedByDescription, 
                 ("Part Number", 20, (invoice) => "" + invoice.PartNumber),
                 ("Description", 25, (invoice) => invoice.PartDescription),
                 ("Quantity"   , 20, (invoice) => "" + invoice.Quantity),

@@ -215,6 +215,12 @@ namespace Classwork
             {
                 Console.Write(col.title.PadRight(col.width));
             }
+            Console.WriteLine();
+
+            foreach (var col in columns)
+            {
+                Console.Write("".PadRight(col.width, '-'));
+            }
 
             Console.WriteLine();
 
