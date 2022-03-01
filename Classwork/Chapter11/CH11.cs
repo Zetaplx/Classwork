@@ -13,4 +13,19 @@ namespace Classwork.Chapter11
 
         }
     }
+
+    public class Account
+    {
+
+    }
+
+    public class CheckingAccount : Account
+    {
+
+    }
+
+    public class SavingsAccount : Account
+    {
+
+    }
 }

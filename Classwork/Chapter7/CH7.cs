@@ -17,8 +17,6 @@
             Random rand = new Random();
             int number = rand.Next(Guesser.MinValue, Guesser.MaxValue + 1);
 
-            // I've done this kind of problem probably a dozen times at this point. It's also the only scenario I have ever found where I like to use a do-while loop.
-            // So... congrats on getting me to use it.
             bool correct = false;
             do
             {

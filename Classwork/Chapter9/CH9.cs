@@ -101,7 +101,7 @@ namespace Classwork.Chapter9
             Console.Write("Enter to return to menu: ");
             Console.ReadLine();
         }
-        private static void QueryD(List<Invoice> invoices)
+        private static IEnumerable<(string desc, decimal value)> QueryD(List<Invoice> invoices)
         {
             Console.Clear();
             Console.WriteLine("Query D\n");
@@ -115,13 +115,15 @@ namespace Classwork.Chapter9
 
             Console.Write("Enter to return to menu: ");
             Console.ReadLine();
+
+            return descriptionsByValue;
         }
         private static void QueryE(List<Invoice> invoices)
         {
             Console.Clear();
             Console.WriteLine("Query E\n");
 
-            IEnumerable<(string desc, decimal value)> descriptionByValue = from i in invoices orderby (i.Price * i.Quantity) select (i.PartDescription, i.Price * i.Quantity);
+            var descriptionByValue = QueryD(invoices);
 
             var limitedTotals = from i in descriptionByValue where i.value >= 200 && i.value <= 500 select i;
             Utils.PrintTable(limitedTotals,
