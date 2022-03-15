@@ -92,6 +92,15 @@ namespace Classwork
         /// <returns></returns>
         public static double SafeReadDouble(string errMessage = "Invalid Input. Please enter a valid floating point number") => SafeReadDouble((n) => true, errMessage);
 
+
+        public static decimal SafeReadDecimal(Func<decimal, bool> condition, string errMessage = "Invalid Input. Please enter a valid floating point number")
+        {
+            var number = SafeReadLine((s) => decimal.TryParse(s, out var num) && condition(num), errMessage);
+            return decimal.Parse(number);
+        }
+
+        public static decimal SafeReadDecimal(string errMessage = "Invalid Input. Please enter a valid floating point number") => SafeReadDecimal((n) => true, errMessage);
+
         /// <summary>
         /// Prompts the user to input some data of type <typeparamref name="T"/>. Inputs that data using the <paramref name="readLineFunction"/> and stores it in <paramref name="output"/>
         /// </summary>
