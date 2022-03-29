@@ -1,11 +1,11 @@
 
-﻿using Classwork.Chapter7;
+﻿using Classwork.Chapter10;
 using Classwork;
 
 public static class Program
 {
     public static void Main(string[] args)
     {
-        Q7_30.Run();
+        Q10_6.Run();
     }
 }

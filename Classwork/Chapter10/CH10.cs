@@ -29,16 +29,32 @@ namespace Classwork.Chapter10
                 Console.WriteLine($"Current Date: {date}");
                 Console.WriteLine("Enter a date (as shown above) to skip to date.");
                 Console.WriteLine("Enter a number to skip that many days (enter nothing or 0 to step 1 day.");
+                Console.WriteLine("Enter m to run the month loop test");
                 Console.WriteLine("Enter e to exit");
                 Console.Write("Enter: ");
                 line = Console.ReadLine() ?? "";
 
                 if (line.ToLower() == "e") running = false;
+                else if (line.ToLower() == "m")
+                {
+                    // Run the loop test
+                    Console.Clear();
+                    Console.WriteLine($"Current Date: {date}");
+                    Console.Write("Enter to start: ");
+                    Console.ReadLine();
+                    for(int i = 1; i <= 12; i++)
+                    {
+                        date.NextMonth();
+                        Console.WriteLine($"Loop {i}: {date}");
+                    }
+                    Console.Write("\nEnter to return to menu: ");
+                    Console.ReadLine();
+                }
                 else if((int.TryParse(line, out var count) && count > 0) || line == "")
                 {
                     if (line == "") count = 1;
                     date.Increment(count);
-                }
+                } 
                 else
                 {
                     var split = line.Split('/');
@@ -163,7 +179,10 @@ namespace Classwork.Chapter10
                 Console.WriteLine("Something else went wrong.....");
             }
         }
-
+        public void NextMonth()
+        {
+            Increment(0, 1, 0);
+        }
 
         public void Increment(int dayIncrement = 1, int monthIncrement = 0, int yearIncrement = 0)
         {
